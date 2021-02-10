@@ -1,0 +1,9 @@
+.sass-cache
+.DS_Store
+npm-debug.log
+node_modules
+.tmp
+package-lock.json
+.history/
+dist
+*.code-workspace
