@@ -4,11 +4,24 @@
   "description": "Sephora - Quiz build with VanillaJS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "gulp"
   },
   "author": "Mikael Pereira Messias <mikaelpmessias@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^4.0.2"
-  }
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "browser-sync": "^2.26.14",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-better-rollup": "^4.0.1",
+    "gulp-sass": "^4.1.0",
+    "gulp-terser-js": "^5.2.2",
+    "node-sass": "^5.0.0",
+    "rollup": "^2.38.5",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  },
+  "dependencies": {}
 }
