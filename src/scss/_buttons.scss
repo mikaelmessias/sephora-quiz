@@ -1,0 +1,21 @@
+.btn {
+  background-color: transparent;
+  border: 2px solid $white;
+  color: $white;
+  text-transform: uppercase;
+  cursor: pointer;
+  outline: 0;
+
+  &--init {
+    padding: 22px 30px;
+    font-size: 22px;
+  }
+
+  &--next {
+    background-color: $grey;
+    padding: 12px 46px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+}
