@@ -18,18 +18,18 @@ const Render = {
   
   /**
    * Render the middle steps of the quiz.
-   * @param {Object} data
-   * @param {string} data.name
-   * @param {string} data.question
-   * @param {string} data.description
-   * @param {boolean} data.isLastStep
-   * @param {Object[]} data.choices
-   * @param {string} data.choices.text
-   * @param {string} data.choices.description
-   * @param {*} nextStepId 
+   * @param {Object} content - The current step content
+   * @param {string} content.name
+   * @param {string} content.question
+   * @param {string} content.description
+   * @param {boolean} content.isLastStep
+   * @param {Object[]} content.choices
+   * @param {string} content.choices.text
+   * @param {string} content.choices.description
+   * @param {number} stepId - The current step id
    */
-  middleStep (data, nextStepId) {
-    const isBulletActive = (step) => (nextStepId === step) 
+  middleStep (content, stepId) {
+    const isBulletActive = (step) => (stepId === step) 
       ? ' step__navigation-bullet--is-active'
       : '';
 
@@ -37,22 +37,30 @@ const Render = {
       <div class="quiz__container step">
         <header class="step__question">
           <div class="step__navigation">
-            <div class="step__navigation-bullet${isBulletActive(1)}"></div>
-            <div class="step__navigation-bullet${isBulletActive(2)}"></div>
-            <div class="step__navigation-bullet${isBulletActive(3)}"></div>
+            <button
+              class="step__navigation-bullet${isBulletActive(1)}"
+              onClick={handleStepBack(1)}
+            />
+            <button
+              class="step__navigation-bullet${isBulletActive(2)}"
+              onClick={handleStepBack(2)}
+            />
+            <button
+              class="step__navigation-bullet${isBulletActive(3)}"
+            />
           </div>
   
-          <h1 class="step__title">${data.question}</h1>
-          <p class="step__description">${data.description || ''}</p>
+          <h1 class="step__title">${content.question}</h1>
+          <p class="step__description">${content.description || ''}</p>
         </header>
   
-        <div class="step__choices step__choices--${data.choices.length < 4 ? 3 : 4}-columns">
-          ${data.choices.map(choice => `
+        <div class="step__choices step__choices--${content.choices.length < 4 ? 3 : 4}-columns">
+          ${content.choices.map(choice => `
             <div class="step__answer answer">
               <input
                 type="checkbox"
                 class="answer__input"
-                name="${data.name}"
+                name="${content.name}"
                 id="${choice.text.split(" ").join("")}"
                 value="${choice.id}"
                 onclick="handleChoiceClick(this)" 
@@ -72,9 +80,17 @@ const Render = {
           `).join('')}
         </div>
   
-        <button type="button" class="btn btn--next" onclick="handleNextStep()" disabled>
-          Próximo
-        </button>
+        <div class="step__buttons">
+          ${stepId > 1 ? `
+            <button type="button" class="btn btn--back" onclick="handleStepBack()">
+              Voltar
+            </button>
+          ` : ''}
+
+          <button type="button" class="btn btn--next" onclick="handleNextStep()" disabled>
+            ${stepId < 3 ? `Próximo` : 'Ver resultados'}
+          </button>
+        </div>
       </div>
     `;
   },
@@ -82,9 +98,9 @@ const Render = {
   /**
    * Render the last step of the quiz with the result products.
    * @param {Object[]} products - The list of products to be rendered
-   * @param {string} products[].thumb - The image of an product
-   * @param {string} products[].title - The title of an product
-   * @param {string} products[].url - The url of an product
+   * @param {string} products[].thumb
+   * @param {string} products[].title
+   * @param {string} products[].url
    */
   result(products) {
     return `
@@ -101,16 +117,16 @@ const Render = {
 
 
   /**
-   * Generates the content of the quiz step according to the given step id. If its 
-   * @param {Object[]} quiz
+   * Generate content for the current step.
+   * @param {Object[]} quiz - The decision tree
    * @param {string} quiz.name
    * @param {string} quiz.question
    * @param {string} quiz.description
    * @param {boolean} quiz.isLastStep
    * @param {Object[]} quiz.answer
    * @param {number[]} quiz.answer.selectedIds
-   * @param {number} stepId 
-   * @param {number[]} selectedChoices 
+   * @param {number} stepId - The current step
+   * @param {number[]} selectedChoices - The previous selected choices
    */
   generateContent(quiz, stepId, selectedChoices) {
     const data = quiz.find(step => step.id === stepId);
@@ -128,7 +144,7 @@ const Render = {
         
         return selectedIds.every((id) => selectedChoices.includes(id)) && answer;
       });
-      console.log(Render.result(answer.products));
+
       return Render.result(answer.products);
     }
 

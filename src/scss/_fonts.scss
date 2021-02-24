@@ -1,14 +1,27 @@
 @font-face {
-  font-family: OptimaDisplayRoman;
-  src: url('/fonts/OptimaDisplay-Roman.otf.css');
+  font-family: AkzidenzGroteskBQ;
+  src: url('/fonts/AkzidenzGroteskBQ-Regular.otf.css');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: OptimaELRoman;
-  src: url('/fonts/OptimaEL-Roman.otf.css');
+  font-family: AkzidenzGroteskBQ;
+  src: url('/fonts/AkzidenzGroteskBQ-Bold.otf.css');
+  font-weight: 700;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: OptimaELText;
-  src: url('/fonts/OptimaEL-Text.otf.css');
+  font-family: OptimaDisplay;
+  src: url('/fonts/OptimaDisplay-Light.otf.css');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: OptimaNovaLT;
+  src: url('/fonts/OptimaNovaLT-Light.otf.css');
+  font-weight: 300;
+  font-style: normal;
 }

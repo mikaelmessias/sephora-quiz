@@ -1,21 +1,35 @@
 .btn {
   background-color: transparent;
   border: 2px solid $white;
-  color: $white;
+  font-family: AkzidenzGroteskBQ;
   text-transform: uppercase;
+  color: $white;
   cursor: pointer;
   outline: 0;
+  transition: color 0.3s, background-color 0.3s;
 
   &--init {
     padding: 22px 30px;
     font-size: 22px;
+    font-weight: normal;
+  }
+
+  &--back {
+    background-color: $grey;
+    padding: 12px 36px;
+    font-size: 15px;
+    font-weight: 700;
   }
 
   &--next {
-    background-color: $grey;
-    padding: 12px 46px;
-    font-size: 12px;
+    background-color: $black;
+    padding: 12px 36px;
+    font-size: 15px;
     font-weight: 700;
+
+    &:disabled {
+      background-color: $grey;
+    }
   }
 
 }

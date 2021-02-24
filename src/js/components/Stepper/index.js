@@ -7,30 +7,67 @@ const Stepper = {
   /** 
    * @type {number[]} 
    */
-  lastSelected: [],
-  
+  choices: [],
+
   /**
-   *  @type {number[]} 
+   * @typedef Selected
+   * @type {object}
+   * @property {string} id
+   * @property {number[]} choices
    */
+
+  /** @type {Selected[]} */
+  prevSelected: [],
+
+  /** @type {Selected[]} */
   currentSelected: [],
 
   /**
-   *  Render the first step HTML content.  
+   *  Render the first step content.  
    */
   init() {
     return Render.firstStep();
   },
 
   /**
-   * Generate the next step HTML content from the resource.
+   * Generate the next step content from the decision tree.
+   * @param {number} stepId
+   */
+  handleStepBack(stepId) {
+    if (stepId > Stepper.currentStep) {
+      return;
+    }
+
+    const previousStep = stepId ? stepId : Stepper.currentStep - 1;
+    
+    if (previousStep === 1) {
+      Stepper.choices = [];
+      Stepper.prevSelected = [];
+      Stepper.currentSelected = [];
+    } else {
+      const prevSelected = Stepper.prevSelected.find(({ stepId }) => stepId === previousStep - 1);
+      Stepper.choices = prevSelected.choices;
+      Stepper.prevSelected = [prevSelected];
+      Stepper.currentSelected = [];
+    }
+
+    const quizWrapper = document.querySelector('.quiz');
+    quizWrapper.innerHTML = Render.generateContent(quiz, previousStep);
+  
+    Stepper.currentStep = previousStep;
+  },
+
+  /**
+   * Generate the next step content from the decision tree.
    */
   handleNextStep() {
+    if (Stepper.currentStep > 0) {
+      Stepper.choices = Stepper.choices.concat(Stepper.currentSelected);
+      Stepper.prevSelected.push({ stepId: Stepper.currentStep, choices: Stepper.currentSelected });
+      Stepper.currentSelected = [];
+    }
+ 
     const nextStep = Stepper.currentStep + 1;
-    
-    Stepper.lastSelected = Stepper.lastSelected.concat(Stepper.currentSelected);
-    Stepper.currentSelected = [];
-    const selectedChoices = Stepper.lastSelected;
-    console.log(selectedChoices);
     
     const quizWrapper = document.querySelector('.quiz');
 
@@ -38,7 +75,7 @@ const Stepper = {
       quizWrapper.classList.remove('quiz--is-first-step');
     }
 
-    quizWrapper.innerHTML = Render.generateContent(quiz, nextStep, selectedChoices);
+    quizWrapper.innerHTML = Render.generateContent(quiz, nextStep, Stepper.choices);
 
     Stepper.currentStep = nextStep;
   },
